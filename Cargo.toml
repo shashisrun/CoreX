@@ -1,0 +1,11 @@
+[package]
+name = "CoreX"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+tokio = { version = "1.38", features = ["full"] }          # ✅ latest stable
+hyper = { version = "0.14.27", features = ["full"] }       # ✅ latest 0.14 series (stable and LTS)
+deno_core = "0.267.0"                                      # ✅ latest (aligned with Deno v1.43+)
+serde_json = "1.0.117"                                     # ✅ latest
+anyhow = "1.0.82"                                          # ✅ latest
