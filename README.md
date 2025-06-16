@@ -1,48 +1,152 @@
+
+```markdown
 # CoreX 🚀
 
-**CoreX** is a blazing-fast hybrid API framework that fuses the power of **TypeScript (Deno)**, **Rust**, and **AssemblyScript** into a single, ultra-performant runtime. Built for scale, safety, and developer delight — CoreX helps you write APIs with TypeScript while compiling performance-critical logic to native binaries.
+**CoreX** is a blazing-fast, developer-first API framework that lets you write your application logic in **TypeScript** and **AssemblyScript**, while compiling and executing it on a high-performance **Rust-native runtime**.
+
+Built for edge APIs, serverless infrastructure, and real-world DX, CoreX fuses the **developer ergonomics of TypeScript** with the **performance and safety of Rust** — all without requiring users to write a single line of Rust.
 
 ---
 
-## ⚡ Why CoreX?
+## ⚙️ Core Philosophy
 
-- 🔥 **Native Speed** — Compile AssemblyScript or Rust directly to machine code
-- 🧵 **Cross-Runtime Memory** — Seamlessly share constants, memory, and logic across TS ↔ Rust
-- 🎯 **Zero-Cost Abstractions** — Decorators auto-generate bindings, validators, and routing
-- 🧩 **Composable Design** — Use only what you need, from edge APIs to full backend systems
-- 🧪 **Developer Experience** — Inspired by FastAPI, with decorators and type safety out of the box
+**You write only this:**
+- ✍️ `TypeScript` for routes, validation, and business logic
+- ⚡ `AssemblyScript` for fast, compute-heavy functions
+
+**CoreX handles this:**
+- ⚙️ Route handling and decorators
+- 🧠 Shared memory + global constants
+- 🧱 AS → Rust transpilation and compilation
+- 🚀 Native HTTP server with Tokio
+- 🔄 Deno ↔ Rust ↔ AS function calls
 
 ---
 
 ## 🛠 Tech Stack
 
-| Layer         | Tech                  | Purpose                      |
-|--------------|-----------------------|------------------------------|
-| Application  | **TypeScript (Deno)** | Developer-friendly API logic |
-| Native Core  | **Rust**              | Native speed, registry, ops  |
-| Plugins      | **AssemblyScript**    | Safe, fast custom logic      |
-| Interop      | Decorators & Registry | TS ↔ Rust ↔ AS communication  |
+| Layer        | Technology         | Purpose                                |
+|--------------|--------------------|----------------------------------------|
+| Application  | **TypeScript (Deno)** | API routes, decorators, validations     |
+| Plugin Logic | **AssemblyScript** | Fast functions, custom business logic   |
+| Runtime Core | **Rust + Tokio**   | Web server, router, registry, memory    |
+| Bridge       | **Deno Core Embed**| Execute TS code from Rust, or vice versa|
 
 ---
 
 ## 📁 Project Structure
 
+```
+
 corex/
-├── runtime/ # Rust runtime (function registry + Deno embed)
+├── runtime/             # Rust runtime: router, registry, deno embed
 ├── routes/
-│ ├── ts/ # API routes written in TypeScript
-│ └── native/ # Native Rust routes or AS-transpiled
-├── decorators/ # Metadata extractor for TS decorators
-├── shared/ # Shared constants, types, and memory
+│   ├── ts/              # User-written TS API handlers
+│   └── as/              # User-written AS modules (transpiled to Rust)
+├── decorators/          # Decorator parser (ts-morph or Babel)
+├── shared/              # Shared constants, types, and memory
 └── README.md
 
+````
 
 ---
 
-## 🧪 Quick Start
+## 🧪 Example Usage
+
+```ts
+// routes/ts/greet.ts
+@sharedConst("GREETING")
+export const GREETING = "Hello";
+
+@exposeToRust()
+export function greet(name: string) {
+  return `${GREETING}, ${name}`;
+}
+````
+
+```ts
+// routes/as/math.as.ts (AssemblyScript subset)
+@exposeToTS()
+export function add(a: i32, b: i32): i32 {
+  return a + b;
+}
+```
+
+```rust
+// Generated from AS transpiler → routes/native/math.rs
+#[expose_to_ts]
+pub fn add(a: i32, b: i32) -> i32 {
+    a + b
+}
+```
+
+---
+
+## 🧠 Features
+
+* ✅ Zero-config decorators: `@get`, `@validate`, `@post`
+* ✅ Deno V8 snapshotting for fast cold starts
+* ✅ Shared memory registry between Deno ↔ Rust
+* ✅ Compile AssemblyScript → Rust → native code
+* ✅ TS ↔ AS ↔ Rust function bridge
+* ✅ Typed validation and input schemas from TS
+
+---
+
+## 🚀 Getting Started
 
 ```bash
-git clone https://github.com/shashisrun/CoreX.git
+git clone https://github.com/yourname/corex.git
 cd corex
-deno task dev        # Starts the Deno + Rust server
-cargo build --release # Compile Rust core
+
+# Install Deno
+deno task dev        # Starts Deno + Rust runtime
+
+# Compile runtime core
+cargo build --release
+
+# Scaffold new route
+corex create route hello --lang ts
+corex create route compute --lang as
+```
+
+---
+
+## 🧩 Roadmap
+
+* [ ] Rust native runtime with TS decorators
+* [ ] Shared constants between TS and Rust
+* [ ] AssemblyScript-to-Rust transpiler
+* [ ] WASM plugin fallback for AS
+* [ ] CLI: `corex build`, `corex dev`, `corex new`
+* [ ] OpenAPI generator from TS metadata
+* [ ] Hot reloading and live compiler
+* [ ] Auth, cookies, and session middleware
+* [ ] Built-in DB connectors
+
+---
+
+## 📜 License
+
+MIT © 2025 CoreX Contributors
+
+---
+
+## 🙌 Contribute
+
+If you're excited about the future of fast, typed APIs with native execution — join us!
+
+PRs welcome. Reach out on [GitHub Discussions](https://github.com/shashisrun/CoreX/discussions) or [open an issue](https://github.com/shashisrun/CoreX/issues).
+
+```
+
+---
+
+Let me know if you'd like:
+- The `corex dev` and `corex build` CLI scaffolds
+- A logo or branding assets
+- GitHub Actions CI/CD workflow
+- Domain name availability checks (e.g. `corex.dev`, `usecorex.com`)
+
+Happy to keep iterating with you!
+```
